@@ -1,44 +1,54 @@
 import React from 'react';
-import Info from './components/Info';
-import Counter from './components/Counter';
-import Image from './components/Image';
+import Info from './components/Info'
+import { apiCall } from './services';
 import './App.css';
-import { isConstructorDeclaration } from 'typescript';
+import { API_URL } from './constants';
 
 interface IState {
   counter : number;
 }
 
 class App extends React.Component <{}, IState>{
-  incrementCounter: any;
+  constructor(props: {}) {
+      super(props);
+      this.state = {
+          counter: 0
+      }
+  }
+  
+  componentDidMount(){
+    apiCall(API_URL.users)
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err)
+    }) 
+  }
+
+  componentDidUpdate(){
+      console.log('did update')
+  }
+
+  // renderInfo = () => {
+  //     const { counter } = this.state;
+  //     if (counter % 2 === 0) {
+  //         return <Info />
+  //     }
+  //     return null;
+  // }
 
   render() {
-    this.state = {
-      counter : 0
-    }
-
-    const incrementCounter = () => {
-      const { counter } = this.state;
-      this.setState({counter: counter + 1})
-    }
-
-    const renderImage = () => {
-      const {counter} = this.state;
-      if (counter%3 === 0 && counter !== 0){
-        return <Image/>
-      }
-    }
-
-    return(
-      <div className='app-wraper'>
-        <Info Nama="Dani" Kelas="XA" isMorning={true}/>
-        <Counter counter={this.state.counter} handleAppState={this.incrementCounter}/>
-        {this.renderImage()}
-      </div>
+    const { counter } = this.state;
+    return (
+        <div className='app-wrapper'>
+            {/* <button> onClick={() => this.setState({counter : counter + 1})}>click me</button>
+            <h1>{counter}</h1>
+            <br />
+            {this.renderInfo()} */}
+        </div>
     )
   }
-  renderImage(): React.ReactNode {
-    throw new Error('Method not implemented.');
-  }
 }
+
 export default App;
