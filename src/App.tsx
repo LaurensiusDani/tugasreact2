@@ -7,7 +7,7 @@ import './App.css';
 
 interface IState {
   counter : number;
-  data: IUsersResponse[]
+  data: IUsersResponse[];
 }
 
 class App extends React.Component <{}, IState>{
@@ -15,14 +15,14 @@ class App extends React.Component <{}, IState>{
       super(props);
       this.state = {
           counter: 0
-          data: [],
+          data: []
       }
   }
   
   componentDidMount(){
     apiCall(API_URL.users)
-    .then((data) => {
-      console.log(data);
+    .then((data:any) => {
+      this.setState({data: data});
     })
     .catch((err) => {
       console.log(err)
@@ -41,6 +41,19 @@ class App extends React.Component <{}, IState>{
   //     return null;
   // }
 
+  renderUsers = () =>{
+    const {data} = this.state;
+
+    return data.map((user) =>{
+      return (
+        <div>
+          <h5>{user.name}</h5>
+          <p>{user.email}</p>
+        </div>
+      )
+    })
+  }
+
   render() {
     const { counter } = this.state;
     return (
@@ -49,6 +62,7 @@ class App extends React.Component <{}, IState>{
             <h1>{counter}</h1>
             <br />
             {this.renderInfo()} */}
+            {this.renderUsers()}
         </div>
     )
   }
