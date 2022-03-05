@@ -1,11 +1,13 @@
 import React from 'react';
 import Info from './components/Info'
 import { apiCall } from './services';
-import './App.css';
 import { API_URL } from './constants';
+import { IUsersResponse } from './interface';
+import './App.css';
 
 interface IState {
   counter : number;
+  data: IUsersResponse[]
 }
 
 class App extends React.Component <{}, IState>{
@@ -13,6 +15,7 @@ class App extends React.Component <{}, IState>{
       super(props);
       this.state = {
           counter: 0
+          data: [],
       }
   }
   
