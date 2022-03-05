@@ -1,5 +1,4 @@
 import React from 'react';
-import Info from './components/Info'
 import { apiCall } from './services';
 import { API_URL } from './constants';
 import { IUsersResponse } from './interface';
@@ -15,7 +14,7 @@ class App extends React.Component <{}, IState>{
       super(props);
       this.state = {
           counter: 0
-          data: []
+          data: [],
       }
   }
   
@@ -23,6 +22,12 @@ class App extends React.Component <{}, IState>{
     apiCall(API_URL.users)
     .then((data:any) => {
       this.setState({data: data});
+
+      data.forEach((user:IUsersResponse) => {
+
+        let url = API_URL.posts.replace('{userId}',user.id.toString());
+        console.log(url);
+      })
     })
     .catch((err) => {
       console.log(err)
@@ -43,10 +48,9 @@ class App extends React.Component <{}, IState>{
 
   renderUsers = () =>{
     const {data} = this.state;
-
     return data.map((user) =>{
       return (
-        <div>
+        <div key={user.id}>
           <h5>{user.name}</h5>
           <p>{user.email}</p>
         </div>
